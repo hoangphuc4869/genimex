@@ -13,21 +13,48 @@
                 <div class="w-full bg-white text-left p-4 mb-2">Last Edit was at {{ $setting->updated_at }}</div>
                 @endif
 
-                <form method="POST" action="{{ route('admin.setting.update', $setting->id) }}">
+                <form method="POST" action="{{ route('admin.setting.update', $setting->id) }}" class="form-ajax">
                     @csrf
+
                     @method('PUT')
+
+                    <select class="languge" name="lang" id="postLang">
+                        <option value="vi" >Tiếng việt</option>
+                        <option value="en" selected>English</option>
+                        <option value="spa">Spanish</option>
+                    </select>
+
+                    
+
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
+                        <input type="hidden" name="id" value="{{$setting->id}}">
                 <div class="mb-1">
                     <label for="site_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Site Name</label>
                     <input type="text" name="site_name" id="site_name" value="{{ $setting->site_name }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                    <div class="translation">
+                     <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Translation</label>
+                    <input type="text" value="{{ !empty($setting_name[0]->translation) ? $setting_name[0]->translation : $setting_name[0]->site_name }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="trans_column[site_name]" id="en-title" placeholder="Translation...">
+                   </div>
+                
                 </div>
                 <div class="mb-1">
                     <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Site Description</label>
                     <input type="text" name="description" id="description" value="{{ $setting->description }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                    
+                     <div class="translation">
+                     <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Translation</label>
+                    <input type="text" value="{{ !empty($setting_des[0]->translation) ? $setting_des[0]->translation : $setting_des[0]->description}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="trans_column[description]" id="en-title" placeholder="Translation...">
+                   </div>
+                
                 </div>
                 <div class="mb-1">
                     <label for="about" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">About</label>
                     <input type="text" name="about" id="about" value="{{ $setting->about }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                
+                     <div class="translation">
+                     <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Translation</label>
+                    <input type="text" value="{{ !empty($setting_about[0]->translation) ? $setting_about[0]->translation : $setting_about[0]->about}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="trans_column[about]" id="en-title" placeholder="Translation...">
+                   </div>
                 </div>
                 <div class="mb-1">
                     <label for="copy_right" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Copy Right in footer</label>

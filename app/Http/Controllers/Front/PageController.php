@@ -12,7 +12,6 @@ class PageController extends Controller
     {
         // I've Pass Slug to Get the Page per it's Slug
         $page = Page::whereSlug($slug)->firstOrFail();
-
         return view('front.page', compact('page'));
     }
 }

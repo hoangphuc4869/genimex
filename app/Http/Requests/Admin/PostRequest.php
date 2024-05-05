@@ -26,13 +26,18 @@ class PostRequest extends FormRequest
     {
         return [
             'title' => ['required', 'min:3'],
-            'content' => ['required', 'min:20'],
+            'enTitle' => ['max:9999'],
+            'lang' => ['required'],
+            'content' => ['required', 'min:5'],
+            'translated_content' => ['min:10'],
             'category_id' => ['required', 'exists:categories,id'],
             'slug' => ['required', Rule::unique('posts')->ignore($this?->post?->id)],
             'status' => ['required', 'boolean'],
-            'image' => ['image', 'mimes:jpeg,png,jpg', 'max:2048', Rule::requiredIf(!$this?->post?->id)],
+            'image' => ['image', 'mimes:jpeg,png,jpg'],
+            // 'image' => ['image', 'mimes:jpeg,png,jpg', 'max:2048', Rule::requiredIf(!$this?->post?->id)],
             'tags' => ['exists:tags,id'],
-            'user_id' => ['required', 'exists:users,id']
+            'user_id' => ['required', 'exists:users,id'],
+            'trans_column' => [''],
         ];
     }
 

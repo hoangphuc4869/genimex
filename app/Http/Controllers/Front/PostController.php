@@ -19,9 +19,9 @@ class PostController extends Controller
         $post_title = $post->title;
 
         if (!Cookie::get('post_viewed_' . $post->id)) {
-            // Update view counter of post
+            
             $post->increment('views');
-            // Create a cookie and set it for 1 day
+            
             Cookie::queue('post_viewed_' . $post->id, true, 60 * 24);
         }
 

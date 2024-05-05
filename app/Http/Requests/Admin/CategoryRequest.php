@@ -28,7 +28,8 @@ class CategoryRequest extends FormRequest
         return [
             'name' => ['required', 'min:3', 'max:25', Rule::unique('categories')->ignore($this?->category?->id)],
             'slug' => ['required', Rule::unique('categories')->ignore($this?->category?->id)],
-            'user_id' => ['required', 'exists:users,id', new Authcheck]
+            'user_id' => ['required', 'exists:users,id', new Authcheck],
+            'trans_column' => [''],
         ];
     }
 }

@@ -11,13 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
-            $table->id();
-            $table->text('body');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->morphs('commentable');
+        Schema::create('translated_contents', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->foreignId('original_content_id')->constrained("posts")->onDelete('cascade');
+            $table->string("language_code");
+            $table->string("translated_title");
+            // $table->string("translated_content");
             $table->timestamps();
         });
+
+        
     }
 
     /**
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
+        //
     }
 };

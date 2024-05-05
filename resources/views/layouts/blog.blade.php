@@ -11,16 +11,21 @@
     </title>
     <!-- Tailwind -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
         .font-family-karla {
-            font-family: karla;
+            font-family: "Be Vietnam Pro";
+        }
+        .lang-switch {
+            background: #fff;
+            padding: 10px;
         }
     </style>
 
     <!-- AlpineJS -->
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    {{-- <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script> --}}
     <!-- Font Awesome -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
         integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
@@ -46,9 +51,31 @@
         </div>
         }
     @endif
+    <!-- Top top Bar Nav -->
+
+    <nav>
+        <div class="nav-wrap flex justify-between">
+            <div class="company-name">
+                CHUNG CƯ PHÚ MỸ C2
+            </div>
+            <div class="company-email">
+                CHUNGCUPHUMYC2@GENIMEX.COM.VN
+            </div>
+
+            <div class="hotline">
+                HOTLINE: <a href="tel: 0816868688">081.68.68.688</a>
+            </div>
+        </div>
+    </nav>
+    
+
     <!-- Top Bar Nav -->
     <nav class="w-full py-4 bg-blue-800 shadow">
         <div class="w-full container mx-auto flex flex-wrap items-center justify-between">
+            <div class="lang-switch">
+                <a href="{{route('lang','en')}}" class="btn btn-link btn-sm">EN</a>  
+                <a href="{{route('lang', 'vi')}}" class="btn btn-link btn-sm">VI</a>
+            </div>
 
             <nav>
                 <ul class="flex items-center justify-between font-bold text-sm text-white uppercase no-underline">
@@ -60,16 +87,17 @@
                     @auth
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button class="py-2 px-4 bg-red-500 hover:bg-red-700">LogOut</button>
+                            <button class="py-2 px-4 bg-red-500 hover:bg-red-700">{{ __('blog.logout') }}</button>
                         </form>
                     @else
                         <li><a class="py-2 px-4 mr-2 bg-gray-500 hover:bg-gray-700"
-                                href="{{ route('register') }}">Register</a>
-                        <li><a class="py-2 px-4 bg-green-500 hover:bg-green-700" href="{{ route('login') }}">Login</a>
+                                href="{{ route('register') }}">{{__('blog.register')}}</a>
+                        <li><a class="py-2 px-4 bg-green-500 hover:bg-green-700" href="{{ route('login') }}">{{__('blog.login')}}</a>
                         @endauth
 
                 </ul>
             </nav>
+            
 
             <div class="flex items-center text-lg no-underline text-white pr-6">
                 <a class="" href="{{ $setting->url_fb }}">
@@ -93,10 +121,12 @@
     <header class="w-full container mx-auto">
         <div class="flex flex-col items-center py-12">
             <a class="font-bold text-gray-800 uppercase hover:text-gray-700 text-5xl" href="{{ route('webhome') }}">
-                {{ $setting->site_name }}
+                {{ !empty($setting_name[0]->translation) ? $setting_name[0]->translation : $setting_name[0]->site_name }}
+                {{-- {{ $setting->site_name }} --}}
             </a>
             <p class="text-lg text-gray-600">
-                {{ $setting->description }}
+                {{ !empty($setting_des[0]->translation) ? $setting_des[0]->translation : $setting_des[0]->description }}
+                {{-- {{ $setting->description }} --}}
             </p>
         </div>
     </header>
@@ -113,13 +143,15 @@
         <div :class="open ? 'block' : 'hidden'" class="w-full flex-grow sm:flex sm:items-center sm:w-auto">
             <div
                 class="w-full container mx-auto flex flex-col sm:flex-row items-center justify-center text-sm font-bold uppercase mt-0 px-6 py-2">
-                <a href="{{ route('webhome') }}" class="hover:bg-gray-400 rounded py-2 px-4 mx-2">Home</a>
-                @forelse ($categories as $category)
-                    <a href="{{ route('category.show', $category->slug) }}"
-                        class="hover:bg-gray-400 rounded py-2 px-4 mx-2">{{ $category->name }}</a>
+                <a href="{{ route('webhome') }}" class="hover:bg-gray-400 rounded py-2 px-4 mx-2">{{__('blog.home')}}</a>
+               @forelse ($categories2 as $category)
+
+                  <a href="{{ route('category.show', $category->slug) }}" class="hover:bg-gray-400 rounded py-2 px-4 mx-2">{{ !empty($category->translation) ? $category->translation : $category->name }}</a>
+                
                 @empty
-                    No Categories !
+                    No Categories!
                 @endforelse
+
             </div>
         </div>
     </nav>
@@ -134,16 +166,16 @@
             <aside class="w-full md:w-1/3 flex flex-col items-center px-3">
 
                 <div class="w-full bg-white shadow flex flex-col my-4 p-6">
-                    <p class="text-xl font-semibold pb-5">About Us</p>
-                    <p class="pb-2">{{ $setting->about }}</p>
+                    <p class="text-xl font-semibold pb-5">{{__('blog.about_us')}} </p>
+                    <p class="pb-2">{{ !empty($setting_about[0]->translation) ? $setting_about[0]->translation : $setting_about[0]->about }}</p>
                     {{-- <a href="#"
                     class="w-full bg-blue-800 text-white font-bold text-sm uppercase rounded hover:bg-blue-700 flex items-center justify-center px-2 py-3 mt-4">
                     Get to know us
                 </a> --}}
                 </div>
 
-                <div class="w-full bg-white shadow flex flex-col my-4 p-6">
-                    <p class="text-xl font-semibold pb-5">Tags</p>
+                {{-- <div class="w-full bg-white shadow flex flex-col my-4 p-6">
+                    <p class="text-xl font-semibold pb-5">{{__('blog.tags')}}</p>
                     <div class="flex flex-wrap">
 
                         @foreach ($tags as $tag)
@@ -155,18 +187,18 @@
                         @endforeach
 
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="w-full bg-white shadow flex flex-col my-4 p-6">
-                    <p class="text-xl font-semibold pb-5">Top 5 Writers</p>
+                    <p class="text-xl font-semibold pb-5">{{__('blog.top5')}}</p>
                     {{--  --}}
                     <div class="content flex justify-between py-2 w-full">
                         <div class="px-2 justify-between">
-                            Name
+                            {{__('blog.name')}}
 
                         </div>
                         <div class="justify-between">
-                            Posts Count
+                            {{__('blog.posts_count')}}
                         </div>
                     </div>
                     @forelse ($top_users as $top)
@@ -183,7 +215,7 @@
                             </div>
                         </div>
                     @empty
-                        No Members !
+                        {{__('blog.no_member')}}
                     @endforelse
                 </div>
 

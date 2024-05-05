@@ -6,6 +6,7 @@ use App\Traits\SlugCreater;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CategoryRequest;
 use App\Models\Category;
+use App\Models\TranslatedContent;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -16,10 +17,10 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(TranslatedContent $translatedContent)
     {
         $categories = Category::with('user:id,name')->get();
-
+       
         return view('admin.category.index', compact('categories'));
     }
 
@@ -29,7 +30,8 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {   
+        
         return view('admin.category.create');
     }
 
@@ -41,8 +43,22 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        Category::create($request->validated());
+        // dd($request);
+        $category = Category::create($request->validated());
+        
+            foreach ($request->trans_column as $column => $transaltion) {
+                    $trans = TranslatedContent::updateOrcreate ([
+                        'from'=> "categories",
+                        'original_content_id' => $category->id,
+                        'language_code' => $request->lang,
+                        'column_name' => $column,
+                    ],[
+                        'translation'=> !empty($transaltion) ? $transaltion : $request->name,
+                    ]);
+                
+            }
 
+        
         return to_route('admin.category.index')->with('message', trans('admin.category_created'));
     }
 
@@ -78,6 +94,22 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request, Category $category)
     {
         $category->update($request->validated());
+        if(!empty($request->trans_column)){
+            foreach ($request->trans_column as $column => $transaltion) {
+                if($transaltion != null && $transaltion != ''){
+                    
+                    $trans = TranslatedContent::updateOrcreate ([
+                        'from'=> "categories",
+                        'original_content_id' => $category->id,
+                        'language_code' => $request->lang,
+                        'column_name' => $column,
+                    ],[
+                        'translation'=> $transaltion
+                    ]);
+                }
+            }
+
+        }
 
         return to_route('admin.category.index')->with('message',  trans('admin.category_updated'));
     }

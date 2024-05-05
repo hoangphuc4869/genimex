@@ -33,6 +33,8 @@ class UpdateSettingRequest extends FormRequest
             'url_insta' => ['required', 'url'],
             'url_twitter' => ['required', 'url'],
             'url_linkedin' => ['required', 'url'],
+            'trans_table' => [''],
+            
         ];
     }
 }

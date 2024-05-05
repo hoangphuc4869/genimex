@@ -6,11 +6,16 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Models\TranslatedContent;
 
 class Post extends Model
 {
     use HasFactory;
     protected $fillable = ['title', 'content', 'image', 'category_id', 'user_id', 'slug', 'status'];
+
+    public function translatedContents(){
+        return $this->hasMany('TranslatedContent::class','original_content_id');
+    }
 
     protected function createdAt(): Attribute
     {

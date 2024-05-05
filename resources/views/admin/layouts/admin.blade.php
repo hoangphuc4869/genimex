@@ -8,6 +8,8 @@
     <meta name="author" content="Yasser Elgammal">
     <meta name="description" content="">
 
+    
+
     <!-- Tailwind -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <style>
@@ -53,11 +55,12 @@
             background-color: rgba(249, 250, 251, var(--tw-bg-opacity));
         }
     </style>
+    <link rel="stylesheet" href="{{asset("custom.css")}}">
 </head>
 
 <body class="bg-gray-100 font-family-karla flex">
 
-    <aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
+    <aside class="relative bg-sidebar h-screen w-64 sm:block shadow-xl">
         <div class="p-4">
             <a href="{{ route('admin.index') }}"
                 class="text-white text-3xl font-semibold uppercase hover:text-gray-300">
@@ -115,6 +118,11 @@
                     class="{{ request()->routeIs('*.setting.*') ? 'active-nav-link' : 'opacity-75 hover:opacity-100' }} flex items-center text-white  py-4 pl-6 nav-item">
                     <i class="fas fa-wrench mr-3"></i>
                     Settings
+                </a>
+                <a href="{{ route('admin.homepage') }}"
+                    class="{{ request()->routeIs('*.homepage.*') ? 'active-nav-link' : 'opacity-75 hover:opacity-100' }} flex items-center text-white  py-4 pl-6 nav-item">
+                    <i class="fas fa-wrench mr-3"></i>
+                    Trang chủ
                 </a>
             @endcan
         </nav>
@@ -218,6 +226,7 @@
                         <i class="fas fa-tablet-alt mr-3"></i>
                         Settings
                     </a>
+                    
                 @endcan
 
                 <form method="POST" action="{{ route('logout') }}">
@@ -272,10 +281,10 @@
         {{-- @yield('content') --}}
         {{ $slot }}
 
-        <footer class="w-full bg-white text-right p-4">
+        {{-- <footer class="w-full bg-white text-right p-4">
             ControlPanel by <a target="_blank" href="https://davidgrzyb.com" class="underline">David Grzyb</a> |
             Developed by <a target="_blank" href="https://linkedin.com/in/elgammal" class="underline">Yasser Elgammal</a>.
-        </footer>
+        </footer> --}}
     </div>
 
     </div>
@@ -372,8 +381,28 @@
                     ['view', ['codeview', 'help']]
                 ]
             });
+
+            $('#summernote2').summernote({
+                placeholder: 'Hello ..!',
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'video']],
+                    ['view', ['codeview', 'help']]
+                ]
+            });
         </script>
     @endif
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.10/dist/cdn.min.js"></script>
+    <script src="{{ asset('custom.js') }}"></script>
 
 </body>
 

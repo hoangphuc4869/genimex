@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\PostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Models\TranslatedContent;
 use App\Traits\SlugCreater;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -40,6 +41,8 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
+        // $posts = Tag::all();
+
 
         return view('admin.post.create', compact('categories', 'tags'));
     }
@@ -59,11 +62,39 @@ class PostController extends Controller
             $post_data['image'] = $get_file;
         }
 
+        // dd($request);
+
         $post = Post::create($post_data);
+
+
+       
+            foreach ($request->trans_column as $column => $translation) {
+                
+               
+                    $trans = TranslatedContent::updateOrCreate(
+                        [   
+                            'from' => 'posts',
+                            'original_content_id' => $post->id,
+                            'language_code' => $request->lang,
+                            'column_name' => $column,
+                        ],
+                        [
+                        
+                           'translation' => !empty($translation) ? $translation : ($column === "title" ? $request->title : $request ->content),
+
+                        ]
+                        
+                    );
+                
+            }
+        
+
 
         if ($request->has('tags')) {
             $post->tags()->attach($request->tags);
         }
+
+        
 
         return to_route('admin.post.index')->with('message', trans('admin.post_created'));
     }
@@ -74,13 +105,16 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function edit(Post $post, Request $request)
     {
         $categories = Category::all();
         $tags = Tag::all();
+        
+        $transcontents = TranslatedContent::where('original_content_id', $post->id)->first();
 
-        return view('admin.post.edit', compact('post', 'categories', 'tags'));
+        return view('admin.post.edit', compact('post', 'categories', 'tags', 'transcontents'));
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -89,7 +123,7 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PostRequest $request, Post $post)
+    public function update(PostRequest $request, Post $post, TranslatedContent $translatedContent)
     {
         $post_data = $request->safe()->except('image');
 
@@ -100,10 +134,37 @@ class PostController extends Controller
         }
 
         $post->update($post_data);
+
         $post->tags()->sync($request->tags);
 
-        return to_route('admin.post.index')->with('message', trans('admin.post_updated'));
+        // dd($request);
+
+       
+            foreach ($request->trans_column as $column => $translation) {
+                
+                
+                    $trans = TranslatedContent::updateOrCreate(
+                        [   
+                            'from' => 'posts',
+                            'original_content_id' => $post->id,
+                            'language_code' => $request->lang,
+                            'column_name' => $column,
+                        ],
+                        [
+                           'translation' => !empty($translation) ? $translation : ($column === "title" ? $request->title : $request ->content),
+                        ]
+                    );
+                
+            }
+        
+
+        // else {
+        //     $translatedContent->where('original_content_id', $post->id)->delete();
+        // }
+
+        return redirect()->route('admin.post.index')->with('message', trans('admin.post_updated'));
     }
+
 
     /**
      * Remove the specified resource from storage.

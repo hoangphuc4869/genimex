@@ -18,6 +18,12 @@
             body {
                 font-family: 'Nunito', sans-serif;
             }
+            .lang-switch {
+                background: #fff;
+                padding: 20px;
+                position: fixed;
+                top: 0
+            }
         </style>
     </head>
     <body class="antialiased">
@@ -27,14 +33,20 @@
                     @auth
                         <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
                     @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
+                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">{{__('welcome.login')}}</a>
 
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
+                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">{{__('welcome.register')}}</a>
                         @endif
                     @endauth
                 </div>
             @endif
+
+            <div class="lang-switch">
+                {{-- {{route('lang', ['lang'=> 'en'])}} --}}
+                <a href="{{route('lang','en')}}" class="btn btn-link btn-sm">EN</a>  
+                <a href="{{route('lang', 'vi')}}" class="btn btn-link btn-sm">VI</a>
+            </div>
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">

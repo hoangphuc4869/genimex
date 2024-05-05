@@ -14,7 +14,6 @@ class CategoryController extends Controller
         $category = Category::whereSlug($slug)->firstOrFail();
         $posts = $category->publishedPosts();
         $category_name = $category->name;
-
         return view('front.category', compact('posts', 'category_name'));
     }
 }
