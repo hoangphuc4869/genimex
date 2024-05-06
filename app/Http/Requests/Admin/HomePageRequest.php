@@ -28,6 +28,12 @@ class HomePageRequest extends FormRequest
            'home_overview_img2' => ['image'],
            'home_location_imgs.*' => ['image'],
            'location_title' => ['min:2'],
+           'sample_title' => ['min:2'],
+           'sample_img' => ['image'],
+           'milestone_title' => ['min:2'],
+           'milestone_imgs.*' => ['image'],
+           'apartment_imgs.*' => ['image'],
+
         ];
     }
 }

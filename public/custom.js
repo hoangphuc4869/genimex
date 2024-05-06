@@ -49,3 +49,13 @@ if (document.querySelector("#editor")) {
         console.error(error);
     });
 }
+
+var swiper = new Swiper(".apartment_slider", {
+    // slidesPerView: 2,
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+    },
+    slidesPerView: 2,
+    spaceBetween: 30,
+});

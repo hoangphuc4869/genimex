@@ -19,7 +19,21 @@ class HomeController extends Controller
         $home_video = $homepage->select('name', 'content')->where('name', 'home_video')->first();
         $home_overview_logo = $homepage->select('name', 'content')->where('name', 'home_overview_logo')->first();
         $home_overview_img = $homepage->select('name', 'content')->where('name', 'home_overview_img')->first();
-        return view('layouts.home', compact('posts', 'home_overview_text', 'home_video', 'home_overview_logo', 'home_overview_img' ));
+        $home_overview_img2 = $homepage->select('name', 'content')->where('name', 'home_overview_img2')->first();
+        $home_overview_img2 = $homepage->select('name', 'content')->where('name', 'home_overview_img2')->first();
+        $location_title = $homepage->select('name', 'content')->where('name', 'location_title')->first();
+        $location_imgs = $homepage->select('name', 'content')->where('name', 'home_location_imgs')->first();
+        $milestone_title = $homepage->select('name', 'content')->where('name', 'milestone_title')->first();
+        $milestone_imgs = $homepage->select('name', 'content')->where('name', 'milestone_imgs')->first();
+        $sample_title = $homepage->select('name', 'content')->where('name', 'sample_title')->first();
+        $sample_img = $homepage->select('name', 'content')->where('name', 'sample_img')->first();
+        $apartment_imgs = $homepage->select('name', 'content')->where('name', 'apartment_imgs')->first();
+
+
+        return view('layouts.home', compact('posts', 'home_overview_text', 'home_video',
+         'home_overview_logo', 'home_overview_img', 'home_overview_img2',
+          'location_title', 'location_imgs', 'milestone_title', 'milestone_imgs',
+           'sample_title', 'sample_img', 'apartment_imgs' ));
         // return view('front.index', compact('posts'));
 
         // return view('welcome');
